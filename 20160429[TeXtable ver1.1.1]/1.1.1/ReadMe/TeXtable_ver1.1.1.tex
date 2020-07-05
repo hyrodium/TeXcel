@@ -1,0 +1,258 @@
+\documentclass{jsarticle}
+\usepackage{amsmath, amssymb}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{wrapfig}
+\usepackage{longtable}
+\usepackage{hhline}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage[dvipdfmx,colorlinks=true,linkcolor=blue,filecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{atbegshi}
+\ifnum 42146=\euc"A4A2
+  \AtBeginShipoutFirst{\special{pdf:tounicode EUC-UCS2}}
+\else
+  \AtBeginShipoutFirst{\special{pdf:tounicode 90ms-RKSJ-UCS2}}
+\fi
+%\setlength{\oddsidemargin}{-0.54cm}
+%\setlength{\textwidth}{52zw}
+\setlength{\textheight}{720pt}
+%\setlength{\columnsep}{1cm}
+\setlength{\voffset}{-2.2cm}
+\newcommand\pair[1]{\left(#1\right)}
+\newcommand\transpose[1]{\,{\vphantom{#1}}^t\!#1}
+\allowdisplaybreaks[4]
+
+\title{TeXtable ver 1.1.1}
+\author{Yuto Horikawa}
+\begin{document}
+\maketitle
+\vspace{-3zw}
+\section{概要}
+TeXtableはExcelの表から\TeX の\verb|table|や\verb|matrix|のコードを生成するためのVBAマクロである.
+\url{http://holyhedron.tumblr.com/TeXtable}からダウンロードできる.
+\section{使い方}
+基本的な使い方は同梱の\verb|TeXtable_ver1.1.1.xls|のHow to useに記載した通りであるからそちらを参照されたい.
+質問$\cdot$要望などあれば\href{https://twitter.com/Hyrodium}{@Hyrodium (twitter)}または\href{http://hyrodium.tumblr.com/}{hyrodium (tumblr)}まで.
+\section{サンプル}
+\verb|TeXtable_ver1.1.1.xls|付属のSample dataの実行結果を最後に記載しておこう.
+
+Sample 1は論理和・論理積の表である.
+Excelのセル内に\$ \$で囲んで数式を打ち込めば表中に数式が反映される.
+\vspace{-0.5em}
+\begin{table}[htb]
+	\captionsetup{labelformat=empty,labelsep=none}
+	\caption{Sample 1}
+	\label{sample1}
+	\centering
+	\begin{tabular}{|c|c|c|c|}\hline
+		$A$	&$B$	&$A\land B$	&$A\lor B$	\\ \hline
+		0	&0	&0	&0	\\ \hline
+		0	&1	&0	&1	\\ \hline
+		1	&0	&0	&1	\\ \hline
+		1	&1	&1	&1	\\ \hline
+	\end{tabular}
+\end{table}
+%\newpage
+
+Sample 2は数独である.
+%筆者はこのためだけに数独の問題を作成するためのプログラムをCで作成した.
+TeXtableには枠線の引き方や文字寄せの設定機能はない.
+このような細かい点に関しては生成されたコードをユーザーが修正することを想定している.
+この例では\verb|hhline|パッケージを使用して2重線を引いている.
+\vspace{-0.5em}
+\begin{table}[htb]
+	\captionsetup{labelformat=empty,labelsep=none}
+	\caption{Sample 2}
+	\label{sample2}
+	\centering
+	\begin{tabular}{|c|c|c||c|c|c||c|c|c|}\hline
+		5	&	&	&	&3	&7	&	&	&9	\\ \hline
+		8	&	&	&	&	&1	&	&4	&	\\ \hline
+		1	&	&2	&6	&	&	&	&	&5	\\ \hhline{|=|=|=#=|=|=#=|=|=|}
+			&7	&	&	&1	&	&5	&	&	\\ \hline
+			&	&	&	&8	&	&	&	&	\\ \hline
+		2	&	&	&3	&	&	&	&	&	\\ \hhline{|=|=|=#=|=|=#=|=|=|}
+			&2	&4	&	&	&	&	&	&6	\\ \hline
+			&1	&	&	&7	&	&	&8	&	\\ \hline
+			&	&	&	&	&6	&1	&	&	\\ \hline
+	\end{tabular}
+\end{table}
+
+\newpage
+Sample 3のような複雑な表(表?)も簡単に作成できる.
+結合されたセルを扱うには\verb|multirow|パッケージを読み込む必要がある.
+TeXtableで作成される表のセルは全て中央寄せになっている.
+\vspace{-0.5em}
+\begin{table}[htb]
+	\captionsetup{labelformat=empty,labelsep=none}
+	\caption{Sample 3}
+	\label{sample3}
+	\centering
+	\begin{tabular}{|c|c|c|c|}\hline
+		\multicolumn{1}{|c|}{\multirow{3}{*}{a}}	&b	&\multicolumn{1}{|c|}{\multirow{2}{*}{c}}	&d	\\ \cline{2-2}\cline{4-4}
+		\multicolumn{1}{|c|}{}	&e	&\multicolumn{1}{|c|}{}	&f	\\ \cline{2-4}
+		\multicolumn{1}{|c|}{}	&\multicolumn{3}{|c|}{\multirow{2}{*}{g}}	\\ \cline{1-1}
+		\multicolumn{1}{|c|}{\multirow{4}{*}{h}}	&\multicolumn{3}{|c|}{}	\\ \cline{2-4}
+		\multicolumn{1}{|c|}{}	&i	&j	&\multicolumn{1}{|c|}{\multirow{2}{*}{k}}	\\ \cline{2-3}
+		\multicolumn{1}{|c|}{}	&l	&\multicolumn{1}{|c|}{\multirow{2}{*}{m}}	&\multicolumn{1}{|c|}{}	\\ \cline{2-2}\cline{4-4}
+		\multicolumn{1}{|c|}{}	&n	&\multicolumn{1}{|c|}{}	&o	\\ \hline
+		p	&q	&\multicolumn{1}{|c|}{\multirow{2}{*}{r}}	&\multicolumn{1}{|c|}{\multirow{5}{*}{s}}	\\ \cline{1-2}
+		\multicolumn{2}{|c|}{\multirow{2}{*}{t}}	&\multicolumn{1}{|c|}{}	&\multicolumn{1}{|c|}{}	\\ \cline{3-3}
+		\multicolumn{2}{|c|}{}	&u	&\multicolumn{1}{|c|}{}	\\ \cline{1-3}
+		v	&\multicolumn{2}{|c|}{\multirow{1}{*}{w}}	&\multicolumn{1}{|c|}{}	\\ \cline{1-3}
+		x	&y	&z	&\multicolumn{1}{|c|}{}	\\ \hline
+	\end{tabular}
+\end{table}
+
+Sample 4は行列(matrix)である.
+行列でも使い方は表の場合と殆ど同様である.
+結合されたセルにも対応している.
+セルに \$ と入力すれば適切な点々$\cdots,\  \vdots\ , \ddots$に変換される.
+\begin{align}
+	\tag{Sample 4}
+	\begin{pmatrix}
+		a_{11}	&\cdots	&a_{1\ j-1}	&a_{1\ j+1}	&\cdots	&a_{1n}	\\
+		\vdots	&\ddots	&\vdots	&\vdots	&\ddots	&\vdots	\\
+		a_{i-1\ 1}	&\cdots	&a_{i-1\ j-1}	&a_{i-1\ j+1}	&\cdots	&a_{i-1\ n}	\\
+		a_{i+1\ 1}	&\cdots	&a_{i+1\ j-1}	&a_{i+1\ j+1}	&\cdots	&a_{i+1\ n}	\\
+		\vdots	&\ddots	&\vdots	&\vdots	&\ddots	&\vdots	\\
+		a_{m1}	&\cdots	&a_{m\ j-1}	&a_{m\ j+1}	&\cdots	&a_{mn}
+	\end{pmatrix}, \quad
+	\begin{pmatrix}
+		a_{11}	&\cdots	&a_{1m}	&\multicolumn{3}{c}{\multirow{3}{*}{$\hspace{-0.4em}\raisebox{-1.5em}{\text{\huge0}}$}}	\\
+		\vdots	&\ddots	&\vdots	&\multicolumn{3}{c}{}	\\
+		a_{m1}	&\cdots	&a_{mm}	&\multicolumn{3}{c}{}	\\
+		\multicolumn{3}{c}{\multirow{3}{*}{$\hspace{-0.4em}\raisebox{-1.5em}{\text{\huge0}}$}}	&b_{11}	&\cdots	&b_{1n}	\\
+		\multicolumn{3}{c}{}	&\vdots	&\ddots	&\vdots	\\
+		\multicolumn{3}{c}{}	&b_{n1}	&\cdots	&b_{nn}
+	\end{pmatrix}
+\end{align}
+%\newpage
+\\
+
+Sample 5は三角関数表である.
+この例のように, 表がページを跨ぐ場合にはlongtableを使用するのが有効である.
+longtableを使用する際には\verb|longtable|パッケージを読み込むことを忘れてはならない.
+数値を含む場合はExcel上でROUND関数, TEXT関数を使って四捨五入の後にテキスト形式に変換しておくと良い.
+このようにして小数点以下最後の桁の$0$が表示されない問題等が解消される.
+
+\begin{longtable}{|c|c|c|c|}
+	\captionsetup{labelformat=empty,labelsep=none}
+	\caption{Sample 5}
+	\label{sample5}
+	\\ \hline\centering
+	$\theta(^\circ)$	&$\sin(\theta)$	&$\cos(\theta)$	&$\tan(\theta)$	\\ \hline\endhead
+	0	&0.00000000	&1.00000000	&0.00000000	\\ \hline
+	1	&0.01745241	&0.99984770	&0.01745506	\\ \hline
+	2	&0.03489950	&0.99939083	&0.03492077	\\ \hline
+	3	&0.05233596	&0.99862953	&0.05240778	\\ \hline
+	4	&0.06975647	&0.99756405	&0.06992681	\\ \hline
+	5	&0.08715574	&0.99619470	&0.08748866	\\ \hline
+	6	&0.10452846	&0.99452190	&0.10510424	\\ \hline
+	7	&0.12186934	&0.99254615	&0.12278456	\\ \hline
+	8	&0.13917310	&0.99026807	&0.14054083	\\ \hline
+	9	&0.15643447	&0.98768834	&0.15838444	\\ \hline
+	10	&0.17364818	&0.98480775	&0.17632698	\\ \hline
+	11	&0.19080900	&0.98162718	&0.19438031	\\ \hline
+	12	&0.20791169	&0.97814760	&0.21255656	\\ \hline
+	13	&0.22495105	&0.97437006	&0.23086819	\\ \hline
+	14	&0.24192190	&0.97029573	&0.24932800	\\ \hline
+	15	&0.25881905	&0.96592583	&0.26794919	\\ \hline
+	16	&0.27563736	&0.96126170	&0.28674539	\\ \hline
+	17	&0.29237170	&0.95630476	&0.30573068	\\ \hline
+	18	&0.30901699	&0.95105652	&0.32491970	\\ \hline
+	19	&0.32556815	&0.94551858	&0.34432761	\\ \hline
+	20	&0.34202014	&0.93969262	&0.36397023	\\ \hline
+	21	&0.35836795	&0.93358043	&0.38386404	\\ \hline
+	22	&0.37460659	&0.92718385	&0.40402623	\\ \hline
+	23	&0.39073113	&0.92050485	&0.42447482	\\ \hline
+	24	&0.40673664	&0.91354546	&0.44522869	\\ \hline
+	25	&0.42261826	&0.90630779	&0.46630766	\\ \hline
+	26	&0.43837115	&0.89879405	&0.48773259	\\ \hline
+	27	&0.45399050	&0.89100652	&0.50952545	\\ \hline
+	28	&0.46947156	&0.88294759	&0.53170943	\\ \hline
+	29	&0.48480962	&0.87461971	&0.55430905	\\ \hline
+	30	&0.50000000	&0.86602540	&0.57735027	\\ \hline
+	31	&0.51503807	&0.85716730	&0.60086062	\\ \hline
+	32	&0.52991926	&0.84804810	&0.62486935	\\ \hline
+	33	&0.54463904	&0.83867057	&0.64940759	\\ \hline
+	34	&0.55919290	&0.82903757	&0.67450852	\\ \hline
+	35	&0.57357644	&0.81915204	&0.70020754	\\ \hline
+	36	&0.58778525	&0.80901699	&0.72654253	\\ \hline
+	37	&0.60181502	&0.79863551	&0.75355405	\\ \hline
+	38	&0.61566148	&0.78801075	&0.78128563	\\ \hline
+	39	&0.62932039	&0.77714596	&0.80978403	\\ \hline
+	40	&0.64278761	&0.76604444	&0.83909963	\\ \hline
+	41	&0.65605903	&0.75470958	&0.86928674	\\ \hline
+	42	&0.66913061	&0.74314483	&0.90040404	\\ \hline
+	43	&0.68199836	&0.73135370	&0.93251509	\\ \hline
+	44	&0.69465837	&0.71933980	&0.96568877	\\ \hline
+	45	&0.70710678	&0.70710678	&1.00000000	\\ \hline
+	46	&0.71933980	&0.69465837	&1.03553031	\\ \hline
+	47	&0.73135370	&0.68199836	&1.07236871	\\ \hline
+	48	&0.74314483	&0.66913061	&1.11061251	\\ \hline
+	49	&0.75470958	&0.65605903	&1.15036841	\\ \hline
+	50	&0.76604444	&0.64278761	&1.19175359	\\ \hline
+	51	&0.77714596	&0.62932039	&1.23489716	\\ \hline
+	52	&0.78801075	&0.61566148	&1.27994163	\\ \hline
+	53	&0.79863551	&0.60181502	&1.32704482	\\ \hline
+	54	&0.80901699	&0.58778525	&1.37638192	\\ \hline
+	55	&0.81915204	&0.57357644	&1.42814801	\\ \hline
+	56	&0.82903757	&0.55919290	&1.48256097	\\ \hline
+	57	&0.83867057	&0.54463904	&1.53986496	\\ \hline
+	58	&0.84804810	&0.52991926	&1.60033453	\\ \hline
+	59	&0.85716730	&0.51503807	&1.66427948	\\ \hline
+	60	&0.86602540	&0.50000000	&1.73205081	\\ \hline
+	61	&0.87461971	&0.48480962	&1.80404776	\\ \hline
+	62	&0.88294759	&0.46947156	&1.88072647	\\ \hline
+	63	&0.89100652	&0.45399050	&1.96261051	\\ \hline
+	64	&0.89879405	&0.43837115	&2.05030384	\\ \hline
+	65	&0.90630779	&0.42261826	&2.14450692	\\ \hline
+	66	&0.91354546	&0.40673664	&2.24603677	\\ \hline
+	67	&0.92050485	&0.39073113	&2.35585237	\\ \hline
+	68	&0.92718385	&0.37460659	&2.47508685	\\ \hline
+	69	&0.93358043	&0.35836795	&2.60508906	\\ \hline
+	70	&0.93969262	&0.34202014	&2.74747742	\\ \hline
+	71	&0.94551858	&0.32556815	&2.90421088	\\ \hline
+	72	&0.95105652	&0.30901699	&3.07768354	\\ \hline
+	73	&0.95630476	&0.29237170	&3.27085262	\\ \hline
+	74	&0.96126170	&0.27563736	&3.48741444	\\ \hline
+	75	&0.96592583	&0.25881905	&3.73205081	\\ \hline
+	76	&0.97029573	&0.24192190	&4.01078093	\\ \hline
+	77	&0.97437006	&0.22495105	&4.33147587	\\ \hline
+	78	&0.97814760	&0.20791169	&4.70463011	\\ \hline
+	79	&0.98162718	&0.19080900	&5.14455402	\\ \hline
+	80	&0.98480775	&0.17364818	&5.67128182	\\ \hline
+	81	&0.98768834	&0.15643447	&6.31375151	\\ \hline
+	82	&0.99026807	&0.13917310	&7.11536972	\\ \hline
+	83	&0.99254615	&0.12186934	&8.14434643	\\ \hline
+	84	&0.99452190	&0.10452846	&9.51436445	\\ \hline
+	85	&0.99619470	&0.08715574	&11.43005230	\\ \hline
+	86	&0.99756405	&0.06975647	&14.30066626	\\ \hline
+	87	&0.99862953	&0.05233596	&19.08113669	\\ \hline
+	88	&0.99939083	&0.03489950	&28.63625328	\\ \hline
+	89	&0.99984770	&0.01745241	&57.28996163	\\ \hline
+	90	&1.00000000	&0.00000000	&$\mathrm{-}$	\\ \hline
+\end{longtable}
+\newpage
+　
+\vspace{25zw}
+\begin{table}[htb]
+	\captionsetup{labelformat=empty,labelsep=none}
+	\caption{数独のこたえ}
+	\centering
+	\begin{tabular}{|r|r|r||r|r|r||r|r|r|}\hline
+		5	&4	&6	&8	&3	&7	&2	&1	&9	\\ \hline
+		8	&9	&7	&5	&2	&1	&6	&4	&3	\\ \hline
+		1	&3	&2	&6	&4	&9	&8	&7	&5	\\ \hhline{|=|=|=#=|=|=#=|=|=|}
+		4	&7	&3	&9	&1	&2	&5	&6	&8	\\ \hline
+		9	&6	&1	&7	&8	&5	&4	&3	&2	\\ \hline
+		2	&5	&8	&3	&6	&4	&7	&9	&1	\\ \hhline{|=|=|=#=|=|=#=|=|=|}
+		7	&2	&4	&1	&9	&8	&3	&5	&6	\\ \hline
+		6	&1	&5	&2	&7	&3	&9	&8	&4	\\ \hline
+		3	&8	&9	&4	&5	&6	&1	&2	&7	\\ \hline
+	\end{tabular}
+\end{table}
+
+\end{document}
